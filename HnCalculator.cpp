@@ -170,22 +170,22 @@ private:
             if (n%base > prevDigit) {
                 return false;
             }
-            prevDigit = (char)(n%base);
+            prevDigit = static_cast<char>(n % base);
             n /= base;
         }
         return true;
     }
 
     /**
-     * Sorts the digits of a given number in ascending order
+     * Sort the digits of a given number in ascending order
      *
      * This is used for skipping permutations
      *
      * @param n The number for which the digits must be sorted
-     * @return the value of the sorted digits, can not be more than n
+     * @return the value of the sorted digits; cannot be more than n
      */
     std::uint64_t sortDigits(std::uint64_t n) const {
-        char *digits = new char[base];
+        auto *digits = new char[base];
         while (n != 0) {
             if (n%base != 0) {
                 digits[n%base-1]++;
@@ -234,18 +234,18 @@ private:
  * @param threads Number of threads to use for computation
  * @return number of ticks taken
  */
-std::chrono::steady_clock::duration testThreads(HnCalculator &calculator, char threads) {
-    std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+std::chrono::steady_clock::duration testThreads(HnCalculator &calculator, const char threads) {
+    const std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
     calculator.startThreads(threads,true);
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    const std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     return end-start;
 }
 
 int main() {
-    HnCalculator calculator = HnCalculator();
+    auto calculator = HnCalculator();
     calculator.stopAt = 2000000000;
     calculator.outputResults = false;
     calculator.milestoneInc = 10000000;
-    std::chrono::steady_clock::duration elapsedTime = testThreads(calculator, 1);
+    const std::chrono::steady_clock::duration elapsedTime = testThreads(calculator, 1);
     std::cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsedTime).count() << " milliseconds";
 }
